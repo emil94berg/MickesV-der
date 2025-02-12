@@ -19,7 +19,7 @@ namespace MickesVäder
         {
             Collection<WeatherData> weatherLines = new Collection<WeatherData>();
             string[] lines = File.ReadAllLines(Path + fileName);
-            Regex regex = new Regex("^(?<date>\\d{4}-\\d{2}-\\d{2})\\W(?<time>\\d{2}:\\d{2}:\\d{2}),(?<location>Inne|Ute),(?<temp>(\\b|\\-)\\d{1,2}\\.\\d),(?<moist>\\d{1,3})$");
+            Regex regex = new Regex("^(?<year>\\d{4})-(?<month>0[1-9]|1[0-2])-(?<day>0[1-9]|[1-2][0-9]|3[0-1])\\W(?<time>\\d{2}:\\d{2}:\\d{2}),(?<location>Inne|Ute),(?<temp>(\\b|\\-)\\d{1,2}\\.\\d),(?<moist>\\d{1,3})$");
             
 
             foreach (var line in lines)
@@ -27,7 +27,7 @@ namespace MickesVäder
                 Match match = regex.Match(line);
                 if (match.Success)
                 {
-                    weatherLines.Add(new WeatherData(match.Groups["date"].Value, match.Groups["time"].Value, match.Groups["location"].Value, double.Parse(match.Groups["temp"].Value, CultureInfo.InvariantCulture), int.Parse(match.Groups["moist"].Value)));
+                    weatherLines.Add(new WeatherData(int.Parse(match.Groups["year"].Value), int.Parse(match.Groups["month"].Value), int.Parse(match.Groups["day"].Value), match.Groups["time"].Value, match.Groups["location"].Value, double.Parse(match.Groups["temp"].Value, CultureInfo.InvariantCulture), int.Parse(match.Groups["moist"].Value)));
                 }
             }
             var test = (from x in weatherLines
@@ -43,7 +43,7 @@ namespace MickesVäder
             Collection<WeatherData> newLines = new Collection<WeatherData>();
             foreach (var line in test)
             {
-                newLines.Add(new WeatherData(line.AvgDate,null, location, line.AvgTemperature, line.AvgMoist));
+                newLines.Add(new WeatherData(line.AvgDate.Year,line.AvgDate.Month, line.AvgDate.Day, null, location, line.AvgTemperature, line.AvgMoist));
             }
 
             return newLines;
