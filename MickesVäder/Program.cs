@@ -1,20 +1,19 @@
-﻿namespace MickesVäder
+﻿using System.Collections.ObjectModel;
+
+namespace MickesVäder
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            //string[] test = ReadWeatherFile.ReadAll("tempdata5-med fel.txt");
-            //Console.WriteLine(test[0]);
 
-            //string[] test = ReadWeatherFile.ReadAll("tempdata5-med fel.txt");
-            //List<string> list = new List<string>();
-            //list = Sorting.GetAllOnLocation(test, "Ute");
-            //var test1 = list.Where(x => x.Contains ("2016-12-06")).ToList();
-            //foreach (var test2 in test1)
+
+            Collection<WeatherData> data = ReadWeatherFile.ReadAll("tempdata5-med fel.txt", "Ute");
+            //foreach (WeatherData weather in data)
             //{
-            //    Console.WriteLine(test2);
+            //    Console.WriteLine(weather.Date + " " + weather.Temp);
             //}
+            Search.DisplayAvg(data, "2016");
 
         }
     }

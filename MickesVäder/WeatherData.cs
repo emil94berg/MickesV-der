@@ -9,12 +9,12 @@ namespace MickesVäder
     internal class WeatherData
     {
         public string Date { get; set; }
-        public string Time { get; set; }
+        public string? Time { get; set; }
         public string Location { get; set; }
         public double Temp { get; set; }
-        public int Moist { get; set; }
+        public double Moist { get; set; }
 
-        public WeatherData(string date, string time, string location, double temp, int moist)
+        public WeatherData(string date, string time, string location, double temp, double moist)
         {
             Date = date;
             Time = time;    
