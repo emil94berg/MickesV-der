@@ -13,7 +13,8 @@ namespace MickesVäder
             //{
             //    Console.WriteLine(weather.Date + " " + weather.Temp);
             //}
-            Search.DisplayAvg(data, "2016");
+            Search.DisplayAvg(data, "2016-11");
+            //Search.AutumnWinter(data, true);
 
         }
     }
