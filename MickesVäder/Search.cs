@@ -13,10 +13,10 @@ namespace MickesVäder
     internal class Search
     {
         
-        public static void DisplayAvg(Collection<WeatherData> weather, string date)
+        public static Collection<WeatherData> CalculateAvg(Collection<WeatherData> weather)
         {
             var test = (from x in weather
-                        where x.Date.ToString().Contains(date)
+                        //where x.Date.ToString().Contains(date)
                         group x by x.Date into days
                         select new
                         {
@@ -24,26 +24,30 @@ namespace MickesVäder
                             AvgDate = days.Key,
                             AvgMoist = Math.Round(days.Average(x => x.Moist), 0),
                             Mold = ((days.Average(x => x.Moist)) >= 78 && (days.Average(x => x.Temp) > 0)) ? Math.Round(((days.Average(x => x.Moist) - 78) * (days.Average(x => x.Temp)/15)/0.22), 0) : 0
+                            
                             //((luftfuktighet -78) * (Temp/15))/0,22
 
                         });
-            
+            Collection<WeatherData> results = new Collection<WeatherData>();
             foreach(var testWeather in test)
             {
-                Console.WriteLine("Date: " + testWeather.AvgDate + "\tAvg temp: " + (testWeather.AvgTemperature).ToString() + "\tAvg humidity: " + testWeather.AvgMoist + " mold: " + testWeather.Mold);
+                //Console.WriteLine("Date: " + testWeather.AvgDate + "\tAvg temp: " + (testWeather.AvgTemperature).ToString() + "\tAvg humidity: " + testWeather.AvgMoist + " mold: " + testWeather.Mold);
+                results.Add(new WeatherData (testWeather.AvgDate.Year,testWeather.AvgDate.Month,testWeather.AvgDate.Day,"", weather[0].Location, testWeather.AvgTemperature, testWeather.AvgMoist));
+                //Collection<WeatherData> avgList = new WeatherData{int.Parse(testWeather.AvgDate.Year), int.Parse(testWeather.AvgDate.Month), int.Parse(testWeather.AvgDate.Day), double.Parse(testWeather.AvgTemperature), weather[0].Location }
             }
-            if (test.Count() > 1)
-            {
-                double avgTempMonth = 0;
-                foreach(var testWeather1 in test)
-                {
-                    avgTempMonth += testWeather1.AvgTemperature;
-                }
-                Console.WriteLine("Medeltemp på månad = " + Math.Round(avgTempMonth / test.Count(), 2)); 
+            //if (test.Count() > 1)
+            //{
+            //    double avgTempMonth = 0;
+            //    foreach(var testWeather1 in test)
+            //    {
+            //        avgTempMonth += testWeather1.AvgTemperature;
+            //    }
+            //    Console.WriteLine("Medeltemp på månad = " + Math.Round(avgTempMonth / test.Count(), 2)); 
                 
                 
                                    
-            }
+            //}
+            return results;
         }
 
         public static void AutumnWinter(Collection<WeatherData> weather, bool winter)
@@ -57,16 +61,25 @@ namespace MickesVäder
             //Använda timespan för att kolla så att dagarna ligger efter varandra
             int consecutiveDays = 0;
             const int requiredDays = 5; // Antal dagar i rad som krävs
+            int closestPeriod = 0;
+            DateOnly? closestDate = null;
             DateOnly? startDate = null; // Sparar startdatumet för perioden
             DateOnly? endDate = null;   // Sparar slutdatumet för perioden
             DateOnly yesterday = firstDate;
             int lowerstTemp = 0;
-            int higestTemp = 10;
+            int higestTemp = 0;
+            Console.WriteLine("[1]Vinter [2]Höst ");
+            var userNumber = Console.ReadKey(true);
 
-            if(winter == true)
+            if(userNumber.KeyChar == '1')
             {
                 lowerstTemp = -273;
                 higestTemp = 0;
+            }
+            else if (userNumber.KeyChar == '2')
+            {
+                lowerstTemp = 0;
+                higestTemp = 10;
             }
 
             
@@ -92,8 +105,14 @@ namespace MickesVäder
                 }
                 else
                 {
+                    if(consecutiveDays > closestPeriod)
+                    {
+                        closestPeriod = consecutiveDays;
+                        closestDate = startDate;
+                    }
                     consecutiveDays = 0; // Nollställ om en dag bryter kedjan
                     startDate = null; // Återställ startdatum
+                    
                 }
                 yesterday = testWeather.Date;
             }
@@ -101,6 +120,7 @@ namespace MickesVäder
             if (consecutiveDays < requiredDays)
             {
                 Console.WriteLine("Ingen sådan period hittades.");
+                Console.WriteLine("Närmast var: " + closestDate + " antal dagar: " + closestPeriod);
             }
         }
 
