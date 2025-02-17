@@ -15,23 +15,10 @@ namespace MickesVäder
         
         public static Collection<WeatherData> CalculateAvg(Collection<WeatherData> weather)
         {
+            Func<Collection<WeatherData>, IEnumerable<WeatherData>> sortByDay = MyLINQs.SortByMonthFunc;
             
-            var test = (from x in weather
-                        //where x.Location == location
-                        group x by new { x.Date, x.Location } into days
-                        select new WeatherData
-                        {
-                            Temp = Math.Round(days.Average(x => x.Temp), 2),
-                            Date = new DateOnly(days.Key.Date.Year, days.Key.Date.Month, days.Key.Date.Day),
-                            Moist = Math.Round(days.Average(x => x.Moist), 0),
-                            Mold = ((days.Average(x => x.Moist)) >= 78 && (days.Average(x => x.Temp) > 0)) ? Math.Round(((days.Average(x => x.Moist) - 78) * (days.Average(x => x.Temp)/15)/0.22), 0) : 0,
-                            Location = days.Key.Location                            
-                            
-                            //((luftfuktighet -78) * (Temp/15))/0,22
-
-                        });
             Collection<WeatherData> results = new Collection<WeatherData>();
-            foreach (var testWeather in test)
+            foreach (var testWeather in sortByDay(weather))
             {
                 //Console.WriteLine("Date: " + testWeather.AvgDate + "\tAvg temp: " + (testWeather.AvgTemperature).ToString() + "\tAvg humidity: " + testWeather.AvgMoist + " mold: " + testWeather.Mold);
                 results.Add(testWeather);
