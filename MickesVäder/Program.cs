@@ -7,7 +7,7 @@ namespace MickesVäder
     {
         static void Main(string[] args)
         {
-
+            
             Show.Menu();
             //Collection<WeatherData> dataOutside = ReadWeatherFile.ReadAll("tempdata5-med fel.txt", "Ute");
             //Collection<WeatherData> dataInside = ReadWeatherFile.ReadAll("tempdata5-med fel.txt", "Inne");

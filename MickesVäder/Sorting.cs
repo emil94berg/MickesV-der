@@ -10,24 +10,24 @@ namespace MickesVäder
 {
     internal class Sorting
     {
-        public static List<string> GetAllOnLocation (string[] dataSet, string location)
-        {
-            List<string> result = new List<string>();
-            //grupp 5 inne/ute
-            Regex regex = new Regex("^(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})\\W(?<time>\\d{2}:\\d{2}:\\d{2}),(?<location>Inne|Ute),(?<temp>(\\b|\\-)\\d{1,2}\\.\\d),(?<moist>\\d{1,3})$");
+        //public static List<string> GetAllOnLocation (string[] dataSet, string location)
+        //{
+        //    List<string> result = new List<string>();
+        //    //grupp 5 inne/ute
+        //    Regex regex = new Regex("^(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})\\W(?<time>\\d{2}:\\d{2}:\\d{2}),(?<location>Inne|Ute),(?<temp>(\\b|\\-)\\d{1,2}\\.\\d),(?<moist>\\d{1,3})$");
             
-            foreach (var line in dataSet)
-            {
-                Match match = regex.Match(line);
-                if (match.Success && (match.Groups["location"].Value == location))
-                {
-                    result.Add(line);
+        //    foreach (var line in dataSet)
+        //    {
+        //        Match match = regex.Match(line);
+        //        if (match.Success && (match.Groups["location"].Value == location))
+        //        {
+        //            result.Add(line);
                     
-                }
-            }
-            return result;  
-        }
-        public static void GetDailyValues (Collection<WeatherData> data)
+        //        }
+        //    }
+        //    return result;  
+        //}
+        public static void GetDailyValues (Collection<WeatherData> data, string insideOutside)
         {
             
             Console.WriteLine("Vilket datum vill du kolla närmare på?");
@@ -39,11 +39,11 @@ namespace MickesVäder
             if (match1.Success)
             {
                 var test = (from x in data
-                            where x.Date.ToString().Contains(match1.Groups["year"].Value + "-" + match1.Groups["month"].Value)
+                            where x.Date.ToString().Contains(match1.Groups["year"].Value + "-" + match1.Groups["month"].Value) && x.Location == insideOutside
                             select x).ToList();
                 foreach (var x in test)
                 {
-                    Console.WriteLine($"Dag: {x.Date.ToString()} temp: {x.Temp} fukt: {x.Moist}");
+                    Console.WriteLine($"Dag: {x.Date.ToString()} temp: {x.Temp} fukt: {x.Moist} plats: {x.Location}");
                 }
             }
             else if (match.Success)
@@ -51,9 +51,9 @@ namespace MickesVäder
                 DateOnly checkDate = new DateOnly(int.Parse(match.Groups["year"].Value), int.Parse(match.Groups["month"].Value), int.Parse(match.Groups["day"].Value));
                 if (data.Any(x => x.Date.Equals(checkDate)))
                 {
-                    foreach (var avgWeather in data.Where(x => x.Date == checkDate))
+                    foreach (var avgWeather in data.Where(x => x.Date == checkDate && x.Location == insideOutside))
                     {
-                        Console.WriteLine($"Datum: {avgWeather.Date} temperatur: {avgWeather.Temp} fuktighet: {avgWeather.Moist}");
+                        Console.WriteLine($"Datum: {avgWeather.Date} temperatur: {avgWeather.Temp} fuktighet: {avgWeather.Moist} plats: {avgWeather.Location}");
                     } 
                 }
             }
@@ -62,7 +62,20 @@ namespace MickesVäder
                 Console.WriteLine("Felaktigt datum");
             }
         }
-        public static void SortValuesBy(Collection<WeatherData> data)
+        public static Collection<WeatherData> GetMonthlyValues(Collection<WeatherData> data)
+        {
+
+            Collection < WeatherData > monthlyValues = new Collection<WeatherData >();
+            foreach (var weather in data)
+            {
+
+            }
+            return monthlyValues;
+        }
+
+
+
+        public static void SortValuesBy(Collection<WeatherData> data, string location)
         {
             
             Console.WriteLine("[1] Sortera efter temp [2] Sortera efter fuktighet [3] Sortera efter mögelrisk");
@@ -70,19 +83,21 @@ namespace MickesVäder
             switch (userAnswer.KeyChar)
             {
                 case '1':
-                    foreach(var x in data.OrderByDescending(x => x.Temp))
+                    foreach(var x in data.Where(x => x.Location == location).OrderByDescending(x => x.Temp))
                     {
+                        
                         Console.WriteLine($"Dag: {x.Date.ToString()} temp: {x.Temp}");
                     }
                     break;
                 case '2':
-                    foreach(var x in data.OrderBy(x => x.Moist))
+                    foreach(var x in data.Where(x => x.Location == location).OrderBy(x => x.Moist))
                     {
                         Console.WriteLine($"Dag: {x.Date.ToString()} fukt: {x.Moist}");
                     }
                     break;
                 case '3':
                     var test = (from x in data
+                                where x.Location == location
                                 group x by x.Date into days
                                 select new
                                 {

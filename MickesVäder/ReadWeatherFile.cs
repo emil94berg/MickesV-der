@@ -15,7 +15,7 @@ namespace MickesVäder
     {
         public static string Path = "../../../Files/";
 
-        public static Collection<WeatherData> ReadAll(string fileName, string location)
+        public static Collection<WeatherData> ReadAll(string fileName)
         {
             Collection<WeatherData> weatherLines = new Collection<WeatherData>();
             string[] lines = File.ReadAllLines(Path + fileName);
@@ -27,26 +27,36 @@ namespace MickesVäder
                 Match match = regex.Match(line);
                 if (match.Success)
                 {
-                    weatherLines.Add(new WeatherData(int.Parse(match.Groups["year"].Value), int.Parse(match.Groups["month"].Value), int.Parse(match.Groups["day"].Value), match.Groups["time"].Value, match.Groups["location"].Value, double.Parse(match.Groups["temp"].Value, CultureInfo.InvariantCulture), int.Parse(match.Groups["moist"].Value)));
+                    var newWeather = new WeatherData
+                    {
+                        Date = new DateOnly(int.Parse(match.Groups["year"].Value), int.Parse(match.Groups["month"].Value), int.Parse(match.Groups["day"].Value)),
+                        Time = match.Groups["time"].Value,
+                        Location = match.Groups["location"].Value,
+                        Temp = double.Parse(match.Groups["temp"].Value, CultureInfo.InvariantCulture),
+                        Moist = int.Parse(match.Groups["moist"].Value)
+
+                    };
+                    weatherLines.Add(newWeather);
+                    //weatherLines.Add(new WeatherData(new DateOnly(int.Parse(match.Groups["year"].Value), int.Parse(match.Groups["month"].Value), int.Parse(match.Groups["day"].Value)), match.Groups["time"].Value, match.Groups["location"].Value, double.Parse(match.Groups["temp"].Value, CultureInfo.InvariantCulture), int.Parse(match.Groups["moist"].Value)));
                 }
             }
-            var test = (from x in weatherLines
-                        where x.Location == location
-                        group x by x.Date into days
-                        select new
-                        {
-                            AvgTemperature = Math.Round(days.Average(x => x.Temp), 2),
-                            AvgDate = days.Key,
-                            AvgMoist = Math.Round(days.Average(x => x.Moist), 0)
+            //var test = (from x in weatherLines
+            //            where x.Location == location
+            //            group x by x.Date into days
+            //            select new
+            //            {
+            //                AvgTemperature = Math.Round(days.Average(x => x.Temp), 2),
+            //                AvgDate = days.Key,
+            //                AvgMoist = Math.Round(days.Average(x => x.Moist), 0)
 
-                        });
-            Collection<WeatherData> newLines = new Collection<WeatherData>();
-            foreach (var line in test)
-            {
-                newLines.Add(new WeatherData(line.AvgDate.Year,line.AvgDate.Month, line.AvgDate.Day, null, location, line.AvgTemperature, line.AvgMoist));
-            }
+            //            });
+            //Collection<WeatherData> newLines = new Collection<WeatherData>();
+            //foreach (var line in test)
+            //{
+            //    newLines.Add(new WeatherData(line.AvgDate.Year,line.AvgDate.Month, line.AvgDate.Day, null, location, line.AvgTemperature, line.AvgMoist, ));
+            //}
 
-            return newLines;
+            return weatherLines;
         }
     }
 }
