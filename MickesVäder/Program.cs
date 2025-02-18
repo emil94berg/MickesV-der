@@ -22,6 +22,7 @@ namespace MickesVäder
             //Sorting.GetMonthlyValues(avgData);
             //Sorting.SortValuesBy(avgData);
 
+
         }
     }
 }

@@ -16,7 +16,8 @@ namespace MickesVäder
             //Collection<WeatherData> dataInside = ReadWeatherFile.ReadAll("tempdata5-med fel.txt", "Inne");
             //Collection<WeatherData> avgDataInside = Search.CalculateAvg(dataInside, "Inne");
             Collection<WeatherData> weatherDatas = ReadWeatherFile.ReadAll("tempdata5-med fel.txt");
-            Collection<WeatherData> avgData = Search.CalculateAvg(weatherDatas);
+            Collection<WeatherData> avgData = Search.CalculateAvg(weatherDatas, true);
+            WriteWeatherStatsFile.SaveMonthlyAverages(weatherDatas);
             Console.WriteLine("[1] Innomhus [2] Utomhus");
             var userNumber = Console.ReadKey(true);
             //Collection<WeatherData> insideOutside = new Collection<WeatherData>();
@@ -56,7 +57,7 @@ namespace MickesVäder
                         lowerstTemp = 0;
                         higestTemp = 10;
                     }
-                    Search.AutumnWinter(avgData, lowerstTemp, higestTemp);
+                    Console.WriteLine(Search.AutumnWinter(avgData, lowerstTemp, higestTemp));
                     break;
             }
         }

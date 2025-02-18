@@ -13,12 +13,13 @@ namespace MickesVäder
     internal class Search
     {
         
-        public static Collection<WeatherData> CalculateAvg(Collection<WeatherData> weather)
+        public static Collection<WeatherData> CalculateAvg(Collection<WeatherData> weather, bool dateCheck)
         {
-            Func<Collection<WeatherData>, IEnumerable<WeatherData>> sortByDay = MyLINQs.SortByMonthFunc;
-            
+            Func<Collection<WeatherData>, IEnumerable<WeatherData>> sortedData = dateCheck ? MyLINQs.SortByDay : MyLINQs.SortByMonth;
+
+
             Collection<WeatherData> results = new Collection<WeatherData>();
-            foreach (var testWeather in sortByDay(weather))
+            foreach (var testWeather in sortedData(weather))
             {
                 //Console.WriteLine("Date: " + testWeather.AvgDate + "\tAvg temp: " + (testWeather.AvgTemperature).ToString() + "\tAvg humidity: " + testWeather.AvgMoist + " mold: " + testWeather.Mold);
                 results.Add(testWeather);
@@ -43,9 +44,11 @@ namespace MickesVäder
         {
             DateOnly firstDate = new DateOnly(2016,08,01);
             DateOnly lastDate = new DateOnly(2017,02,14);
-            var autumn = weather.Where(x => (x.Date >= firstDate) && (x.Date <= lastDate)).ToList();
+            var autumn = weather.Where(x => (x.Date >= firstDate) && (x.Date <= lastDate) && x.Location == "Ute")
+                                .OrderBy(w => w.Date)
+                                .ToList();
 
-            autumn = autumn.OrderBy(w => w.Date).ToList();
+            // autumn = autumn.OrderBy(w => w.Date).ToList();
 
             //Använda timespan för att kolla så att dagarna ligger efter varandra
             int consecutiveDays = 0;
@@ -87,8 +90,8 @@ namespace MickesVäder
                     if (consecutiveDays == requiredDays)
                     {
                         endDate = testWeather.Date; // Spara slutdatumet
-                        Console.WriteLine($"Hittade en period på {requiredDays} dagar i rad där temperaturen är mellan {lowerstTemp} och {higestTemp} grader.");
-                        Console.WriteLine($"Startdatum: {startDate?.ToShortDateString()}, Slutdatum: {endDate?.ToShortDateString()}");
+                        // Console.WriteLine($"Hittade en period på {requiredDays} dagar i rad där temperaturen är mellan {lowerstTemp} och {higestTemp} grader.");
+                        // Console.WriteLine($"Startdatum: {startDate?.ToShortDateString()}, Slutdatum: {endDate?.ToShortDateString()}");
                         saveDate = $"Startdatum: {startDate?.ToShortDateString()}, Slutdatum: {endDate?.ToShortDateString()}";
                         break; // Avsluta loopen när vi har hittat en matchning
                     }
@@ -109,8 +112,8 @@ namespace MickesVäder
 
             if (consecutiveDays < requiredDays)
             {
-                Console.WriteLine("Ingen sådan period hittades.");
-                Console.WriteLine("Närmast var: " + closestDate + " antal dagar: " + closestPeriod);
+                //Console.WriteLine("Ingen sådan period hittades.");
+                //Console.WriteLine("Närmast var: " + closestDate + " antal dagar: " + closestPeriod);
                 saveDate = "Närmast var: " + closestDate + " antal dagar: " + closestPeriod;
             }
             return saveDate;

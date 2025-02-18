@@ -1,3 +1,21 @@
-hejhej
-hejhej
-hejhej
+Datum: 2016-5	 Temp: 25,16  	 Fukt: 38	 Mögelrisk: 0	 Plats: Inne
+Datum: 2016-5	 Temp: 25,33  	 Fukt: 32	 Mögelrisk: 0	 Plats: Ute
+Datum: 2016-6	 Temp: 24,7  	 Fukt: 29	 Mögelrisk: 0	 Plats: Inne
+Datum: 2016-6	 Temp: 15,85  	 Fukt: 53	 Mögelrisk: 0	 Plats: Ute
+Datum: 2016-7	 Temp: 20,24  	 Fukt: 53	 Mögelrisk: 0	 Plats: Ute
+Datum: 2016-7	 Temp: 26,28  	 Fukt: 42	 Mögelrisk: 0	 Plats: Inne
+Datum: 2016-8	 Temp: 18,07  	 Fukt: 49	 Mögelrisk: 0	 Plats: Ute
+Datum: 2016-8	 Temp: 25,57  	 Fukt: 35	 Mögelrisk: 0	 Plats: Inne
+Datum: 2016-9	 Temp: 16,16  	 Fukt: 60	 Mögelrisk: 0	 Plats: Ute
+Datum: 2016-9	 Temp: 23,31  	 Fukt: 42	 Mögelrisk: 0	 Plats: Inne
+Datum: 2016-10	 Temp: 8,18  	 Fukt: 65	 Mögelrisk: 0	 Plats: Ute
+Datum: 2016-10	 Temp: 22,41  	 Fukt: 27	 Mögelrisk: 0	 Plats: Inne
+Datum: 2016-11	 Temp: 22,78  	 Fukt: 19	 Mögelrisk: 0	 Plats: Inne
+Datum: 2016-11	 Temp: 3,31  	 Fukt: 83	 Mögelrisk: 6	 Plats: Ute
+Datum: 2016-12	 Temp: 2,51  	 Fukt: 78	 Mögelrisk: 0	 Plats: Ute
+Datum: 2016-12	 Temp: 21,84  	 Fukt: 16	 Mögelrisk: 0	 Plats: Inne
+Datum: 2017-1	 Temp: 21,36  	 Fukt: 18	 Mögelrisk: 0	 Plats: Inne
+Datum: 2017-1	 Temp: 3,8  	 Fukt: 95	 Mögelrisk: 20	 Plats: Ute
+Höst: Startdatum: 2016-10-04, Slutdatum: 2016-10-08
+Vinter: Närmast var: 2016-11-06 antal dagar: 4
+((days.Average(x => x.Moist)) >= 78 && (days.Average(x => x.Temp) > 0)) ? Math.Round(((days.Average(x => x.Moist) - 78) * (days.Average(x => x.Temp) / 15) / 0.22), 0) : 0

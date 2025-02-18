@@ -10,7 +10,7 @@ namespace MickesVäder
 {
     internal class MyLINQs
     {
-        public static IEnumerable<WeatherData> SortByDayFunc(Collection<WeatherData> weather)
+        public static IEnumerable<WeatherData> SortByDay(Collection<WeatherData> weather)
         {
             var test = (from x in weather
                             //where x.Location == location
@@ -29,7 +29,7 @@ namespace MickesVäder
             return test;
         }
 
-        public static IEnumerable<WeatherData> SortByMonthFunc(Collection<WeatherData> weather)
+        public static IEnumerable<WeatherData> SortByMonth(Collection<WeatherData> weather)
         {
             var test = (from x in weather
                             //where x.Location == location
