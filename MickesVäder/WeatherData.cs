@@ -14,6 +14,5 @@ namespace MickesVäder
         public double Temp { get; set; }
         public double Moist { get; set; }
         public double? Mold { get; set; }
-
     }
 }

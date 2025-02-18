@@ -10,10 +10,10 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MickesVäder
 {
-    internal class Search
+    internal class Calculate
     {
         
-        public static Collection<WeatherData> CalculateAvg(Collection<WeatherData> weather, bool dateCheck)
+        public static Collection<WeatherData> Avg(Collection<WeatherData> weather, bool dateCheck)
         {
             Func<Collection<WeatherData>, IEnumerable<WeatherData>> sortedData = dateCheck ? MyLINQs.SortByDay : MyLINQs.SortByMonth;
             Collection<WeatherData> results = new Collection<WeatherData>();
@@ -22,30 +22,27 @@ namespace MickesVäder
             {
                 results.Add(testWeather);
             }
-
             return results;
         }
 
-        public static string AutumnWinter(Collection<WeatherData> weather,int lowerstTemp, int higestTemp)
+        public static string AutumnOrWinter(Collection<WeatherData> weather,int lowerstTemp, int higestTemp)
         {
             DateOnly firstDate = new DateOnly(2016,08,01);
             DateOnly lastDate = new DateOnly(2017,02,14);
-
-            var autumn = weather.Where(x => (x.Date >= firstDate) && (x.Date <= lastDate) && x.Location == "Ute")
-                                .OrderBy(w => w.Date)
-                                .ToList();
-
-            int consecutiveDays = 0;
-            const int requiredDays = 5; 
-            int closestPeriod = 0;
             DateOnly? closestDate = null;
             DateOnly? startDate = null; 
             DateOnly? endDate = null;   
             DateOnly yesterday = firstDate;
+            int consecutiveDays = 0;
+            int closestPeriod = 0;
+            const int requiredDays = 5; 
+            string saveDate = "";
 
-            string? saveDate = null;
+            var season = weather.Where(x => (x.Date >= firstDate) && (x.Date <= lastDate) && x.Location == "Ute")
+                                .OrderBy(w => w.Date)
+                                .ToList();
             
-            foreach (var testWeather in autumn)
+            foreach (var testWeather in season)
             {
                 var span = testWeather.Date.DayNumber - yesterday.DayNumber;
                 if (testWeather.Temp > lowerstTemp && testWeather.Temp < higestTemp && span <= 1)
@@ -61,7 +58,6 @@ namespace MickesVäder
                     {
                         endDate = testWeather.Date;
                         saveDate = $"Startdatum: {startDate?.ToShortDateString()}, Slutdatum: {endDate?.ToShortDateString()}";
-
                         break;
                     }
                 }
@@ -73,19 +69,15 @@ namespace MickesVäder
                         closestDate = startDate;
                     }
                     consecutiveDays = 0;
-                    startDate = null;
-                    
+                    startDate = null; 
                 }
                 yesterday = testWeather.Date;
             }
-
             if (consecutiveDays < requiredDays)
             {
                 saveDate = "Närmast var: " + closestDate + " antal dagar: " + closestPeriod;
             }
             return saveDate;
         }
-        
-        
     }
 }

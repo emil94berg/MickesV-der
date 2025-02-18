@@ -13,7 +13,7 @@ namespace MickesVäder
 
             while (true)
             {
-                Show.Menu(weatherData); 
+                Display.Menu(weatherData); 
             }
         }
     }
