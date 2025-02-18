@@ -37,24 +37,8 @@ namespace MickesVäder
 
                     };
                     weatherLines.Add(newWeather);
-                    //weatherLines.Add(new WeatherData(new DateOnly(int.Parse(match.Groups["year"].Value), int.Parse(match.Groups["month"].Value), int.Parse(match.Groups["day"].Value)), match.Groups["time"].Value, match.Groups["location"].Value, double.Parse(match.Groups["temp"].Value, CultureInfo.InvariantCulture), int.Parse(match.Groups["moist"].Value)));
                 }
             }
-            //var test = (from x in weatherLines
-            //            where x.Location == location
-            //            group x by x.Date into days
-            //            select new
-            //            {
-            //                AvgTemperature = Math.Round(days.Average(x => x.Temp), 2),
-            //                AvgDate = days.Key,
-            //                AvgMoist = Math.Round(days.Average(x => x.Moist), 0)
-
-            //            });
-            //Collection<WeatherData> newLines = new Collection<WeatherData>();
-            //foreach (var line in test)
-            //{
-            //    newLines.Add(new WeatherData(line.AvgDate.Year,line.AvgDate.Month, line.AvgDate.Day, null, location, line.AvgTemperature, line.AvgMoist, ));
-            //}
 
             return weatherLines;
         }

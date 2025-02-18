@@ -10,23 +10,6 @@ namespace MickesVäder
 {
     internal class Sorting
     {
-        //public static List<string> GetAllOnLocation (string[] dataSet, string location)
-        //{
-        //    List<string> result = new List<string>();
-        //    //grupp 5 inne/ute
-        //    Regex regex = new Regex("^(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})\\W(?<time>\\d{2}:\\d{2}:\\d{2}),(?<location>Inne|Ute),(?<temp>(\\b|\\-)\\d{1,2}\\.\\d),(?<moist>\\d{1,3})$");
-            
-        //    foreach (var line in dataSet)
-        //    {
-        //        Match match = regex.Match(line);
-        //        if (match.Success && (match.Groups["location"].Value == location))
-        //        {
-        //            result.Add(line);
-                    
-        //        }
-        //    }
-        //    return result;  
-        //}
         public static void GetDailyValues (Collection<WeatherData> data, string insideOutside)
         {
             
@@ -110,10 +93,6 @@ namespace MickesVäder
                         Console.WriteLine($"Dag: {x.AvgDate} risk för mögel: {x.Mold}");
                     }
 
-                    //foreach (var x in data.Select(x => new { Mold = ((data.Average(x => x.Moist)) >= 78 && (data.Average(x => x.Temp) > 0)) ? Math.Round(((data.Average(x => x.Moist) - 78) * (data.Average(x => x.Temp) / 15) / 0.22), 0) : 0, Date = x.Date }).OrderBy(x => x.Mold))
-                    //{
-                    //    Console.WriteLine($"Dag: {x.Date} risk för mögel: {x.Mold}");
-                    //}
                     break;
             }
 

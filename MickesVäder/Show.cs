@@ -9,19 +9,13 @@ namespace MickesVäder
 {
     internal class Show
     {
-        public static void Menu()
+        public static void Menu(Collection<WeatherData> weatherDatas)
         {
-            //Collection<WeatherData> dataOutside = ReadWeatherFile.ReadAll("tempdata5-med fel.txt", "Ute");
-            //Collection<WeatherData> avgDataOutside = Search.CalculateAvg(dataOutside, "Ute");
-            //Collection<WeatherData> dataInside = ReadWeatherFile.ReadAll("tempdata5-med fel.txt", "Inne");
-            //Collection<WeatherData> avgDataInside = Search.CalculateAvg(dataInside, "Inne");
-            Collection<WeatherData> weatherDatas = ReadWeatherFile.ReadAll("tempdata5-med fel.txt");
-            Collection<WeatherData> avgData = Search.CalculateAvg(weatherDatas, true);
-            WriteWeatherStatsFile.SaveMonthlyAverages(weatherDatas);
+            string insideOutside = "";
+
+            Console.Clear();
             Console.WriteLine("[1] Innomhus [2] Utomhus");
             var userNumber = Console.ReadKey(true);
-            //Collection<WeatherData> insideOutside = new Collection<WeatherData>();
-            string insideOutside = "";
             if(userNumber.KeyChar == '1')
             {
                 insideOutside = "Inne";
@@ -30,23 +24,25 @@ namespace MickesVäder
             {
                 insideOutside = "Ute";
             }
-            
+
+            Console.Clear();
             Console.WriteLine("[1] Sortera meny [2] Dagliga/Månadsvis medel temp/fukt [3] Meteorologisk vinter/höst");
             var userAnswer = Console.ReadKey(true);
             switch (userAnswer.KeyChar)
             {
                 case '1':
-                    Sorting.SortValuesBy(avgData, insideOutside);
+                    Sorting.SortValuesBy(Search.CalculateAvg(weatherDatas, true), insideOutside);
                     break;
                 case '2':
-                    Sorting.GetDailyValues(avgData, insideOutside);
+                    Sorting.GetDailyValues(Search.CalculateAvg(weatherDatas, true), insideOutside);
                     break;
                 case '3':
                     int lowerstTemp = 0;
                     int higestTemp = 0;
+
+                    Console.Clear();
                     Console.WriteLine("[1]Vinter [2]Höst ");
                     var userNumber1 = Console.ReadKey(true);
-
                     if (userNumber1.KeyChar == '1')
                     {
                         lowerstTemp = -273;
@@ -57,9 +53,14 @@ namespace MickesVäder
                         lowerstTemp = 0;
                         higestTemp = 10;
                     }
-                    Console.WriteLine(Search.AutumnWinter(avgData, lowerstTemp, higestTemp));
+
+                    Console.Clear();
+                    Console.WriteLine(Search.AutumnWinter(Search.CalculateAvg(weatherDatas, true), lowerstTemp, higestTemp));
+
                     break;
             }
+
+            Console.ReadKey(true);
         }
     }
 }

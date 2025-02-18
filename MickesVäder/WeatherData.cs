@@ -15,15 +15,5 @@ namespace MickesVäder
         public double Moist { get; set; }
         public double? Mold { get; set; }
 
-        //public WeatherData(int year, int month, int day, string time, string location, double temp, double moist, double mold)
-        //{
-        //    Date = new DateOnly(year, month, day);
-        //    Time = time;    
-        //    Location = location;
-        //    Temp = temp;
-        //    Moist = moist;
-        //    Mold = mold;
-
-        //}
     }
 }
