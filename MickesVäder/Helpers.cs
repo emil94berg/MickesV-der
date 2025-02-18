@@ -19,11 +19,25 @@ namespace MickesVäder
                 try
                 {
                     int result = int.Parse(keyInfo.KeyChar.ToString());
-                    return validChoices.Contains(result) ? result : throw new Exception();
+
+                    if (validChoices.Contains(result))
+                        return result;
+                    else
+                    {
+                        throw new ArgumentOutOfRangeException($"{result} är ett ogiltigt menyval.");
+                    }
                 }
-                catch (Exception)
+                catch (FormatException ex)
                 {
-                    Console.WriteLine("Ogiltigt val, försök igen...");
+                    Console.WriteLine($"FormatException: {ex.Message}");
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine($"ArgumentOutOfRangeException: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception: {ex.Message}");
                 }
             }
         }
