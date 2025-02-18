@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,9 +28,10 @@ namespace MickesVäder
             {
                 Environment.Exit(0);
             }
-
             Console.Clear();
-            int userAnswer = Helpers.GetUserIntInput("[1] Sortera meny [2] Dagliga/Månadsvis medel temp/fukt [3] Meteorologisk vinter/höst", 1, 2, 3);
+            int userAnswer = Helpers.GetUserIntInput("[1] Sortera meny [2] Dagliga/Månadsvis medel temp/fukt" + (insideOutside == "Ute" ? " [3] Meteorologisk vinter/höst" : ""),
+                        insideOutside == "Ute" ? new int[] { 1, 2, 3 } : new int[] { 1, 2 }
+                        );
             switch (userAnswer)
             {
                 case 1:
