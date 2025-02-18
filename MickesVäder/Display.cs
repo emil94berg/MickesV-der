@@ -35,9 +35,7 @@ namespace MickesVäder
             switch (userAnswer)
             {
                 case 1:
-                    int userAnswer2 = Helpers.GetUserIntInput("[1] Sortera efter temp [2] Sortera efter fuktighet" + (insideOutside == "Ute" ? " [3] Sortera efter mögelrisk" : ""),
-                        insideOutside == "Ute" ? new int[] { 1, 2, 3 } : new int[] { 1, 2 }
-                        );
+                    int userAnswer2 = Helpers.GetUserIntInput("[1] Sortera efter temp [2] Sortera efter fuktighet [3] Sortera efter mögelrisk", 1, 2, 3);
 
                     Console.Clear();
                     switch (userAnswer2)
